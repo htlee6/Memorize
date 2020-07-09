@@ -24,10 +24,20 @@ struct MemoryGame<CardContent> where CardContent: Equatable { // costraints and 
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
         cards = Array<Card>()
-        for pairIndex in 0..<numberOfPairsOfCards {
+        let maxIndex = 2 * numberOfPairsOfCards - 1
+        var pairIndices = [Int]()
+        for i in 0...maxIndex {
+            let randomNumber = Double.random(in: 0...1)
+            if randomNumber >= 0.5 {
+                pairIndices.insert(i/2, at: 0)
+            } else {
+                pairIndices.append(i/2)
+            }
+        }
+        for i in 0...maxIndex {
+            let pairIndex = pairIndices[i]
             let content = cardContentFactory(pairIndex)
-            cards.append(Card(id: pairIndex*2, content: content))
-            cards.append(Card(id: pairIndex*2+1, content: content))
+            cards.append(Card(id: i, content: content))
         }
     }
                     
